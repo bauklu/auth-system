@@ -1,0 +1,189 @@
+{
+  "info": {
+    "name": "Auth System",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Users/Register User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/register/",
+          "host": ["{{base_url}}"],
+          "path": ["api","register",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Alice\",\n  \"email\": \"alice@test.com\",\n  \"password\": \"1234\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Users/Login User",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/login/",
+          "host": ["{{base_url}}"],
+          "path": ["api","login",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"alice@test.com\",\n  \"password\": \"1234\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "pm.environment.set(\"access_token\", jsonData.access);",
+              "pm.environment.set(\"refresh_token\", jsonData.refresh);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Users/Get Profile",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/profile/",
+          "host": ["{{base_url}}"],
+          "path": ["api","profile",""]
+        }
+      }
+    },
+    {
+      "name": "Users/Logout",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/logout/",
+          "host": ["{{base_url}}"],
+          "path": ["api","logout",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"refresh\": \"{{refresh_token}}\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Admin/Login Admin",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/login/",
+          "host": ["{{base_url}}"],
+          "path": ["api","login",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"bob@test.com\",\n  \"password\": \"1234\"\n}"
+        }
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "let jsonData = pm.response.json();",
+              "pm.environment.set(\"admin_access_token\", jsonData.access);",
+              "pm.environment.set(\"admin_refresh_token\", jsonData.refresh);"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Admin/Assign Role",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/admin/assign-role/",
+          "host": ["{{base_url}}"],
+          "path": ["api","admin","assign-role",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"user_id\": 2,\n  \"role_name\": \"admin\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Projects/Create Project",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{admin_access_token}}"
+          }
+        ],
+        "url": {
+          "raw": "{{base_url}}/api/projects/",
+          "host": ["{{base_url}}"],
+          "path": ["api","projects",""]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"My Project\",\n  \"description\": \"Test project\"\n}"
+        }
+      }
+    }
+  ]
+}
