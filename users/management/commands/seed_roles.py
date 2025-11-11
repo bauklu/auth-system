@@ -5,7 +5,7 @@ from users.models import Role, Permission, RolePermission
 
 
 class Command(BaseCommand):
-    help = "Seed roles and permissions"
+    help = "Создает базовые роли и права доступа, если они отсутствуют"
 
     def handle(self, *args, **kwargs):
         roles = ["admin", "user"]
