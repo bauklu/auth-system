@@ -28,4 +28,4 @@ class Command(BaseCommand):
                 permission=perm
             )
 
-        self.stdout.write(self.style.SUCCESS("Roles & permissions seeded"))
+        self.stdout.write(self.style.SUCCESS("Роли и права успешно созданы."))
